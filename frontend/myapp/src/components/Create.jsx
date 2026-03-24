@@ -8,9 +8,30 @@ export const Create = () => {
     const [pEmail,setPemail]=useState("");
     const [pPhone,setPphone]=useState(0);
     const [pPlace,setPplace]=useState("");
+
+     const [errors, setErrors] = useState({});
     
-    const createfunction=()=>{
+    const createfunction=(e)=>{
+    e.preventDefault();
+     let newErrors={};
+       if(!pEmail){
+          newErrors.email="email is required."
+          
+        }
+        else if(!pEmail.includes("@")||!pEmail.includes(".")){
+          newErrors.email="email must have @ / (.)"
+          
+        }
+      
+   
+        setErrors(newErrors);
+
+        
+
+    if(Object.keys(newErrors).length===0){
+
         console.log("created");
+        }   
     }
 
 
@@ -30,7 +51,7 @@ export const Create = () => {
           
            <label>Enter email id</label><br/>
            <input type="text" value={pEmail} onChange={e=>setPemail(e.target.value)}/><br/>
-
+            {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
           <label>Enter phone no</label><br/>
            <input type="number" value={pPhone} onChange={e=>setPphone(e.target.value)}/><br/>
 
