@@ -15,7 +15,7 @@ const storage=multer.diskStorage(
     }
 );
 
-const upload=multer({storage});//upload object 
+export const upload=multer({storage});// creates 'upload' object with file storage details 
 
 
 router.post("/image",upload.single("image"),uploadImage);

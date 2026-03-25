@@ -82,3 +82,42 @@ p a {
 p a:hover {
   text-decoration: underline;
 }
+
+#tableheading{
+  color:white;
+}
+.table {
+  margin: 30px auto;
+  width: 100%;
+  color:white;
+   max-width: 1200px; 
+}
+table{
+  width: 100%;
+  font-size: 18px;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;       
+  text-align: center;
+  border: 1px solid white;
+}
+
+.show-container{
+  margin-top: 500px;
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+   justify-content: flex-start;   
+  min-height: 100vh;
+ gap: 30px;
+  padding-top: 60px;
+ 
+}
+.create-form-card {
+  width: 350px;
+  background-color: #c48b8b;
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+}

@@ -16,7 +16,7 @@ app.get('/',(req,res)=>{
 
 app.use("/api/auth",authRoutes);//connnect route in server
 app.use("/api/upload",uploadRoutes);
-app.use("/uploads",express.static("uploads"));//to make it acceesible on web
+app.use("/uploads",express.static("uploads"));//to make it acceesible on web (uploads : the folder name)
 
 
 app.listen(port, ()=>{

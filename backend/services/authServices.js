@@ -1,7 +1,7 @@
 // const pool=require("../db");
 //signup
 import { pool } from "../db.js";
-export const createPerson= async(email,password)=>{//sign in 
+export const createPerson= async(email,password)=>{//signup
 
    // const personExist=await pool.query("select * from person where email=$1",[email]);
    // if(personExist.rows.length>0)
@@ -18,8 +18,8 @@ export const displayPerson=async()=>{
     return result.rows;
 }
 
-export const insertPerson=async(name,age,email,phone,place)=>{
-    const result=await pool.query("insert into person(name,age,email,phone,place)values ($1,$2,$3,$4,$5) returning *",[name,age,email,phone,place]);
+export const insertPerson=async(name,age,email,phone,place,image)=>{
+    const result=await pool.query("insert into person(name,age,email,phone,place,image)values ($1,$2,$3,$4,$5,$6) returning *",[name,age,email,phone,place,image]);
     return result.rows[0];
 }
 

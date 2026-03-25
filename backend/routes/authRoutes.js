@@ -5,10 +5,11 @@ const router=express.Router();
 
 router.post("/signup",signup); //signup route
 router.get("/disp",display); //display
-router.post("/insert",insert);//insert
+router.post("/insert",insert);//insert( now in upload controller)
 router.delete("/delete/:id",deleteperson);//delete
 router.put("/update/:id",update);//update 
 router.post("/signin",signin);//signin
+
 
 
 export default router;

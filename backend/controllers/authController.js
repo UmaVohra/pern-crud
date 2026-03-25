@@ -1,4 +1,5 @@
 // const createPerson=require('../services/authServices.js');
+import { upload } from '../routes/uploadRoutes.js';
 import { createPerson , displayPerson, insertPerson,deletePerson,updatePerson,signinPerson } from '../services/authServices.js';
 //controller function for sign up
  export const signup= async(req,res)=>{
@@ -28,7 +29,8 @@ export const display=async(req,res)=>{
 export const insert=async(req,res)=>{
     try{
         const {name,age,email,phone,place}=req.body;
-        const person=await insertPerson(name,age,email,phone,place);
+       //const imageLink = await upload.single()
+        const person=await insertPerson(name,age,email,phone,place/*,imageLink*/);
         res.json({message:"insert successful",person});
     }
     catch(err){
