@@ -66,14 +66,9 @@ export const update=async(req,res)=>{
 export const signin=async(req,res)=>{
     try{
         const {email,password}=req.body;
-        const result=await signinPerson(email);
-        if (!result){
-          return res.status(404).json({message:"person not found"});
-        }
-        if (result.password!==password){
-            return res.status(401).json({message:"invalid password"});
-        }
-         return res.json({message:"login done",result});
+        const result=await signinPerson(email,password);
+       
+         return res.json({message:"login done",token:result.token,user:result.user});
     }
     catch(err){
         res.status(404).json({error:err.message});

@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 
 import { useState } from "react";
 import {Link,useNavigate} from "react-router-dom"
@@ -12,7 +12,7 @@ const navigate=useNavigate();
   const [errors,setErrors]=useState({});
 
 
-  const handlesubmit = (e) => {
+  const handlesubmit = async(e) => {
     e.preventDefault();
     let newErrors={};
    
@@ -34,6 +34,20 @@ setErrors(newErrors);
 
 if(Object.keys(newErrors).length===0){
  console.log("sign up ");
+const body={email:email,password:password};
+ const res=await fetch("http://localhost:3000/api/auth/signup",{
+  method:"POST",headers:
+  {
+   "Content-type":"application/json",
+  },
+  body:JSON.stringify(body),
+ });
+ const resp=await res.json();
+ if(!res.ok){
+  console.log("error ",resp.error);
+  return;
+ }
+ console.log(resp);
     navigate("/");
 }
 

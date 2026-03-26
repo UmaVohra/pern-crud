@@ -17,6 +17,33 @@ export const Create = () => {
 const [editId, setEditId] = useState(null);
   const [existingImage,setExistingImage]=useState("");
 
+
+
+  const token=localStorage.getItem("token");
+//delete
+
+const delperson= async (id)=>{
+ // setEditId(id);
+  //console.log(editId);
+
+ const persondel=data.find(prsn=>prsn.id===id);
+console.log(persondel);
+ const res= await fetch(`http://localhost:3000/api/auth/delete/${persondel.id}`,{
+  method:"DELETE",headers:{
+    Authorization:`Bearer ${token}`,
+
+  }
+ });
+
+displayPersons();
+}
+
+
+
+
+
+
+//edit function
 const edit=(id)=>{
   //debugger;
   const person=data.find(user=>user.id===id);
@@ -42,8 +69,11 @@ const edit=(id)=>{
 const displayPersons=async()=>{
   try{
     const res= await fetch("http://localhost:3000/api/auth/disp",{
-      method:"GET",
+      method:"GET",headers:{
+        Authorization:`Bearer ${token}`,
+      }
     });
+    //debugger;
     const result=await res.json();
     console.log(typeof result);
    // console.log(typeof result.show);
@@ -54,10 +84,6 @@ const displayPersons=async()=>{
     console.log(err);
   }
 }
-
-
-
-
 
 
 
@@ -77,6 +103,8 @@ const displayPersons=async()=>{
           method:"PUT",
             headers: {
       "Content-Type": "application/json",
+      Authorization:`Bearer ${token}`,
+      
     }, body: JSON.stringify({
       name: pName,
       age: pAge,
@@ -116,11 +144,14 @@ const displayPersons=async()=>{
 
     try {
       const res = await fetch("http://localhost:3000/api/upload/image", {
-        method: "POST",
+        method: "POST",headers:{
+        Authorization:`Bearer ${token}`,
+      },
         body: formData,
       });
       const data = await res.json();
       console.log(data);
+      displayPersons();
     } catch (err) {
       console.log(err);
     }
@@ -215,6 +246,7 @@ const displayPersons=async()=>{
               <td>{prsn.place}</td>
               <td><img src={`http://localhost:3000/uploads/${prsn.image}`}width={60}></img></td>
               <td><button onClick={()=>edit(prsn.id)}>Edit</button></td>
+              <td> <button onClick={()=>delperson(prsn.id)}>Delete</button></td>
              </tr>
 
              ))}

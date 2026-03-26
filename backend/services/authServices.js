@@ -1,14 +1,21 @@
 // const pool=require("../db");
 //signup
 import { pool } from "../db.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+import dotenv from "dotenv"
+dotenv.config();
+
 export const createPerson= async(email,password)=>{//signup
+     const hashedPassword=await bcrypt.hash(password,10);
 
    // const personExist=await pool.query("select * from person where email=$1",[email]);
    // if(personExist.rows.length>0)
      //   throw new console.error("user already exists");
 
-    const result=await pool.query("insert into person(email,password)values ($1,$2) returning *",[email,password]);
-     
+    //const result=await pool.query("insert into person(email,password)values ($1,$2) returning *",[email,password]);
+     const result=await pool.query("insert into person(email,password)values ($1,$2) returning *",[email,hashedPassword]);
     return result.rows[0];
 };
 
@@ -32,9 +39,17 @@ export const updatePerson=async(id,name,age,email,phone,place)=>{
     return result.rows[0];
  
 }
-export const signinPerson=async(email)=>{
+export const signinPerson=async(email,password)=>{
     const result=await pool.query("select * from person where email=$1",[email]);
-    return result.rows[0];
+    if(result.rows.length===0) throw new Error ("user not found");
+    const user=result.rows[0];
+    const valid=await bcrypt.compare(password,user.password);
+    if(!valid ) throw new Error("passwords not matching");
+
+    //generate token
+    const token = jwt.sign({email:user.email},process.env.JWT_SECRET,{expiresIn:"1h"});
+    console.log("token",token);
+    return {token,user:{email:user.email}};//returning an object
 }
 
 
