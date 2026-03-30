@@ -1,6 +1,6 @@
 // const createPerson=require('../services/authServices.js');
 import { upload } from '../routes/uploadRoutes.js';
-import { createPerson , displayPerson, insertPerson,deletePerson,updatePerson,signinPerson } from '../services/authServices.js';
+import { createPerson , displayPerson,dispPaginated, insertPerson,deletePerson,updatePerson,signinPerson } from '../services/authServices.js';
 //controller function for sign up
  export const signup= async(req,res)=>{
     try{
@@ -24,6 +24,23 @@ export const display=async(req,res)=>{
     catch(err){
         res.status(404).json({error:err.message});
     }
+}
+//paginated display
+export const pagedisp= async(req,res)=>{
+try{
+    const page=parseInt(req.query.page)||1; //default pg1 nd limit 5  
+    const limit=parseInt(req.query.limit)||5;
+    const search=req.query.search||"";
+    const age=req.query.age||"";
+    const disp=await dispPaginated(page,limit,search,age);
+
+    res.json(disp);
+
+
+}
+catch (err){
+    res.status(404).json({error:err.message});
+}
 }
 
 export const insert=async(req,res)=>{

@@ -17,6 +17,11 @@ export const Create = () => {
 const [editId, setEditId] = useState(null);
   const [existingImage,setExistingImage]=useState("");
 
+  const[page,setpage]=useState(1);
+  const[limit,setLimit]=useState(5);
+
+  const[search,setSearch]=useState("");//search
+  const[age,setAge]=useState("");//filter
 
 
   const token=localStorage.getItem("token");
@@ -64,11 +69,12 @@ const edit=(id)=>{
 
   useEffect(()=>{
     displayPersons();
-  },[]);
+  },[page,limit,search,age]);
 
 const displayPersons=async()=>{
   try{
-    const res= await fetch("http://localhost:3000/api/auth/disp",{
+    
+    /*const res= await fetch("http://localhost:3000/api/auth/disp",{
       method:"GET",headers:{
         Authorization:`Bearer ${token}`,
       }
@@ -78,12 +84,30 @@ const displayPersons=async()=>{
     console.log(typeof result);
    // console.log(typeof result.show);
     setData(result.show);
+  */
+  
 
+    
+    //paginated disp
+    
+    const res=await fetch(`http://localhost:3000/api/auth/display/?page=${page}&limit=${limit}&search=${search}&age=${age}`,{
+      method:"GET",
+      headers:{
+        Authorization:`Bearer ${token}`,
+      }
+     
+    });
+    const result=await res.json();
+    console.log(result);
+    setData(result);
   }
-  catch(err){
+   catch(err){
     console.log(err);
   }
-}
+
+  }
+ 
+
 
 
 
@@ -224,7 +248,13 @@ const displayPersons=async()=>{
             <br />
             <button type="submit">Create </button>
           </form>
+       
+          
         </div>
+       
+          <input type="text" placeholder="search by email" onChange={(e)=>{setSearch(e.target.value);setpage(1)}} value={search}></input>
+        
+          <input type="number" placeholder="filter by age" onChange={(e)=>{setAge(e.target.value); setpage(1)}} value={age}></input>
         <div className="table">
           <h1 id="tableheading">person stored are these</h1>
           <table>
@@ -253,6 +283,17 @@ const displayPersons=async()=>{
 
             </tbody>
           </table>
+       <button style={{width:90}} onClick={()=>setpage(page-1)}>previous</button>
+       <button style={{width:90}} onClick={()=>setpage(page+1)}>next</button>
+       <select onChange={(e)=>setLimit(Number(e.target.value))}>
+        <option value={5}>
+          5
+        </option>
+        <option value={10}>
+          10
+        </option>
+       </select>
+
         </div>
         
       </div>

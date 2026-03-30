@@ -23,7 +23,30 @@ export const displayPerson=async()=>{
     const result=await pool.query("select * from person");
 
     return result.rows;
-}
+};
+
+//paginated display
+export const dispPaginated=async(page,limit,search,age)=>{
+    const offset=(page-1)*limit;
+
+    let query="select * from person where 1=1";
+
+    if(search && age){
+        query+=` and (email like '%${search}%'or age=${age})`;
+    }
+   
+    query+=` limit ${limit} offset ${offset}`;
+    console.log(query);
+
+
+   /* const paginatedresult=await pool.query("select * from person limit $1 offset $2",[limit,offset]);*/
+   const paginatedresult=await pool.query(query);
+    return paginatedresult.rows;
+};
+
+
+
+
 
 export const insertPerson=async(name,age,email,phone,place,image)=>{
     const result=await pool.query("insert into person(name,age,email,phone,place,image)values ($1,$2,$3,$4,$5,$6) returning *",[name,age,email,phone,place,image]);
