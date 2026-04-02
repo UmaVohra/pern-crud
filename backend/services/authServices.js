@@ -31,8 +31,11 @@ export const dispPaginated=async(page,limit,search,age)=>{
 
     let query="select * from person where 1=1";
 
-    if(search && age){
-        query+=` and (email like '%${search}%'or age=${age})`;
+    if(search){
+        query+=` and email ilike '%${search}%'`;
+    }
+    if(age){
+        query+=` and age=${age}`;
     }
    
     query+=` limit ${limit} offset ${offset}`;
